@@ -6,16 +6,16 @@ import HomePage from "./pages/HomePage";
 import UsersPage from "./pages/UsersPage";
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <MainLayout />,
-    children: [
-      { index: true, element: <HomePage /> },
-      { path: "users", element: <UsersPage /> },
-      { path: "posts", element: <PostsPage /> },
-      { path: "events", element: <EventsPage /> },
-    ],
-  },
+    {
+        path: "/",
+        element: <MainLayout />,
+        children: [
+            { index: true, element: <HomePage /> },
+            { path: "users", element: <UsersPage /> },
+            { path: "posts", element: <PostsPage /> },
+            { path: "events", element: <EventsPage /> },
+        ],
+    },
 ]);
 
 export default router;
