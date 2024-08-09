@@ -32,7 +32,6 @@ const MainLayout = () => {
             <div
                 style={{
                     height: `calc(100% - ${navBarHeight}px)`,
-                    maxHeight: `calc(100% - ${navBarHeight}px)`,
                     overflowY: "hidden",
                     padding: "2rem",
                 }}

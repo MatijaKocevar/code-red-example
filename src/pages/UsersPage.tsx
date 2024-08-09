@@ -31,8 +31,8 @@ const UsersPage: React.FC = () => {
     if (error) return <div className="m-4 text-red-500">Error: {error}</div>;
 
     return (
-        <div className="h-full flex">
-            <div className="w-1/2 pr-4 h-full overflow-y-auto">
+        <div className="h-full flex gap-8">
+            <div className="w-1/2 h-full overflow-y-auto">
                 <ul className="space-y-4">
                     {users.map((user) => (
                         <UserItem key={user.uuid} user={user} onClick={handleUserClick} />
@@ -44,7 +44,7 @@ const UsersPage: React.FC = () => {
                 This is an assumption I made to show something on the right side. 
                 With minimal effort the list of users can be expanded to the full width of the page. 
             */}
-            <div className="w-1/2 pl-4 h-full">
+            <div className="w-1/2 h-full">
                 <UserDetails user={selectedUser} />
             </div>
         </div>
