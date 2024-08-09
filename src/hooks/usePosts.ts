@@ -11,11 +11,6 @@ export const usePosts = () => {
     const fetchPosts = useCallback(async () => {
         const data = await request<Post[]>("post");
 
-        const tempData = JSON.parse(JSON.stringify(data)) as Post[];
-
-        data?.push(...tempData);
-        data?.push(...tempData);
-
         if (data) {
             setPosts(data);
         } else {
