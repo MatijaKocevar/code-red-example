@@ -17,7 +17,7 @@ const PostsPage: React.FC = () => {
     } = usePosts();
 
     return (
-        <div className="flex gap-8 h-full">
+        <div className="flex gap-8 h-full p-8">
             <PostList posts={posts} loading={loading} error={error} onDelete={handleDelete} />
             <PostForm
                 title={title}

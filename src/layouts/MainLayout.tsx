@@ -33,7 +33,6 @@ const MainLayout = () => {
                 style={{
                     height: `calc(100% - ${navBarHeight}px)`,
                     overflowY: "hidden",
-                    padding: "2rem",
                 }}
             >
                 <Outlet />

@@ -31,7 +31,7 @@ const UsersPage: React.FC = () => {
     if (error) return <div className="m-4 text-red-500">Error: {error}</div>;
 
     return (
-        <div className="h-full flex gap-8">
+        <div className="h-full flex gap-8 p-8">
             <div className="w-1/2 h-full overflow-y-auto">
                 <ul className="space-y-4">
                     {users.map((user) => (

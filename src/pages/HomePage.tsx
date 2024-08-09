@@ -3,7 +3,7 @@ import Logo from "../components/Logo";
 
 const HomePage = () => {
     return (
-        <div className="instructions">
+        <div className="instructions overflow-auto h-full">
             <h1>Welcome adventurer! 👋</h1>
             <p>
                 It's dangerous to go alone. Take{" "}
