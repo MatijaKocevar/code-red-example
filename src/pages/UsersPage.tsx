@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import useApi from "../hooks/useApi";
-import UserItem from "../components/users/UserItem";
 import UserDetails from "../components/users/UserDetails";
 import { User } from "../types/user";
+import CustomList from "../components/CustomList";
+import UserItem from "../components/users/UserItem";
 
 const UsersPage: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
@@ -32,18 +33,17 @@ const UsersPage: React.FC = () => {
 
     return (
         <div className="h-full flex gap-8 p-8">
-            <div className="w-1/2 h-full overflow-y-auto">
-                <ul className="space-y-4">
-                    {users.map((user) => (
-                        <UserItem key={user.uuid} user={user} onClick={handleUserClick} />
-                    ))}
-                </ul>
-            </div>
+            <CustomList<User>
+                items={users}
+                loading={loading}
+                error={error}
+                onDelete={() => {}}
+                itemKey={(user) => user.uuid}
+                renderItem={(user) => (
+                    <UserItem key={user.uuid} user={user} onClick={handleUserClick} />
+                )}
+            />
 
-            {/* 
-                This is an assumption I made to show something on the right side. 
-                With minimal effort the list of users can be expanded to the full width of the page. 
-            */}
             <div className="w-1/2 h-full">
                 <UserDetails user={selectedUser} />
             </div>
