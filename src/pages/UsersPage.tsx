@@ -1,61 +1,52 @@
-import React, { useState, useEffect } from "react";
-
-interface User {
-    id: string;
-    firstName: string;
-    lastName: string;
-}
+import React, { useEffect, useState } from "react";
+import useApi from "../hooks/useApi";
+import UserItem from "../components/users/UserItem";
+import UserDetails from "../components/users/UserDetails";
+import { User } from "../types/user";
 
 const UsersPage: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [selectedUser, setSelectedUser] = useState<User | null>(null);
+    const { loading, error, request } = useApi<User[]>();
 
     useEffect(() => {
         const fetchUsers = async () => {
-            try {
-                const response = await fetch(
-                    `${import.meta.env.VITE_API_URL}20a16019-d40a-4d25-9f47-35d82e84064b/user`
-                );
+            const data = await request("user");
 
-                if (!response.ok) {
-                    const errorMessage = `Failed to fetch users: ${response.status} ${response.statusText}`;
-                    setError(errorMessage);
-                    setLoading(false);
-                    return;
-                }
-
-                const data: User[] = await response.json();
-
+            if (data) {
                 setUsers(data);
-                setLoading(false);
-            } catch (err: unknown) {
-                if (err instanceof Error) {
-                    setError(err.message);
-                } else {
-                    setError("An unknown error occurred");
-                }
-
-                setLoading(false);
+            } else {
+                console.error("Failed to fetch users");
             }
         };
 
         fetchUsers();
-    }, []);
+    }, [request]);
+
+    const handleUserClick = (user: User) => {
+        setSelectedUser(user);
+    };
 
     if (loading) return <div className="m-4">Loading...</div>;
     if (error) return <div className="m-4 text-red-500">Error: {error}</div>;
 
     return (
-        <div className="box-border border-2 border-solid border-red-500 flex w-full h-full flex-col p-4">
-            <h1 className="text-xl font-bold mb-4">Users List</h1>
-            <ul className="list-disc pl-6">
-                {users.map((user) => (
-                    <li key={user.id} className="mb-2">
-                        {user.firstName} - {user.lastName}
-                    </li>
-                ))}
-            </ul>
+        <div className="p-8 h-full flex">
+            <div className="w-1/2 pr-2">
+                <ul className="space-y-4">
+                    {users.map((user) => (
+                        <UserItem key={user.uuid} user={user} onClick={handleUserClick} />
+                    ))}
+                </ul>
+            </div>
+
+            {/* 
+                This is an assumption I made to show something on the right side. 
+                With minimal effort the list of users can be expanded to the full width of the page. 
+            */}
+            <div className="w-1/2 pl-2">
+                <UserDetails user={selectedUser} />
+            </div>
         </div>
     );
 };
