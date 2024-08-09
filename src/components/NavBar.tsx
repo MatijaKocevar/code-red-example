@@ -12,15 +12,18 @@ const NavBar = () => {
         { label: "Posts", href: "/posts" },
         { label: "Events", href: "/events" },
     ];
+
     return (
         <nav className="flex gap-6 p-4">
-            {links.map((link) => {
-                return (
-                    <NavLink key={link.href} to={link.href}>
-                        {link.label}
-                    </NavLink>
-                );
-            })}
+            {links.map((link) => (
+                <NavLink
+                    key={link.href}
+                    to={link.href}
+                    className={({ isActive }) => (isActive ? "font-bold text-white" : "")}
+                >
+                    {link.label}
+                </NavLink>
+            ))}
         </nav>
     );
 };
