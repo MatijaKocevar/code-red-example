@@ -1,13 +1,13 @@
 import { useState, useCallback } from "react";
 
-interface ApiHookResult<T> {
+interface ApiHookResult {
     loading: boolean;
     error: string | null;
-    request: (endpoint: string, options?: RequestInit) => Promise<T | undefined>;
+    request: <T>(endpoint: string, options?: RequestInit) => Promise<T | undefined>;
     checkStatus: () => Promise<boolean>;
 }
 
-const useApi = <T>(): ApiHookResult<T> => {
+const useApi = (): ApiHookResult => {
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
 
@@ -39,7 +39,7 @@ const useApi = <T>(): ApiHookResult<T> => {
     }, [baseUrl]);
 
     const request = useCallback(
-        async (endpoint: string, options: RequestInit = {}): Promise<T | undefined> => {
+        async <T>(endpoint: string, options: RequestInit = {}): Promise<T | undefined> => {
             setLoading(true);
             setError(null);
             try {
