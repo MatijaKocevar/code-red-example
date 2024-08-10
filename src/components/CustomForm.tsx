@@ -2,6 +2,7 @@ import React from "react";
 
 interface CustomFormProps {
     title: string;
+    isTitleValid: boolean;
     onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     additionalFields?: React.ReactNode;
     onSubmit: () => void;
@@ -10,6 +11,7 @@ interface CustomFormProps {
 
 const CustomForm = ({
     title,
+    isTitleValid,
     onTitleChange,
     additionalFields,
     onSubmit,
@@ -24,7 +26,9 @@ const CustomForm = ({
                     value={title}
                     placeholder="Title"
                     onChange={onTitleChange}
-                    className="w-full p-2 border border-gray-300 rounded-md"
+                    className={`w-full p-2 border border-gray-300 rounded-md ${
+                        isTitleValid ? "border-gray-300" : "border-red-500"
+                    }`}
                 />
             </div>
             {additionalFields && (

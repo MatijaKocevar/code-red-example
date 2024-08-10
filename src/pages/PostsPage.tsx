@@ -10,6 +10,7 @@ const PostsPage = () => {
         posts,
         title,
         content,
+        isValid,
         setTitle,
         setContent,
         fetchPosts,
@@ -44,6 +45,7 @@ const PostsPage = () => {
             <div className="w-1/2 h-full">
                 <CustomForm
                     title={title}
+                    isTitleValid={isValid.title}
                     onTitleChange={(e) => setTitle(e.target.value)}
                     additionalFields={
                         <>
@@ -51,7 +53,9 @@ const PostsPage = () => {
                             <textarea
                                 value={content}
                                 onChange={(e) => setContent(e.target.value)}
-                                className="w-full p-2 border border-gray-300 rounded-md flex-grow"
+                                className={`w-full p-2 border border-gray-300 rounded-md flex-grow ${
+                                    isValid.content ? "border-gray-300" : "border-red-500 "
+                                }`}
                                 placeholder="Content..."
                             />
                         </>

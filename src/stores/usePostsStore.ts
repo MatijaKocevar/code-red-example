@@ -1,17 +1,23 @@
 import { create } from "zustand";
 import { Post } from "../types/post";
 import { useApiStore } from "./useApiStore";
+import { useErrorStore } from "./useErrorStore";
 
 interface PostsState {
     posts: Post[];
     title: string;
     content: string;
+    isValid: {
+        title: boolean;
+        content: boolean;
+    };
     fetchPosts: () => Promise<void>;
     setTitle: (title: string) => void;
     setContent: (content: string) => void;
     addPost: () => Promise<void>;
     deletePost: (postId: string) => Promise<void>;
     loading: boolean;
+    validatePostFields: () => boolean;
 }
 
 export const usePostsStore = create<PostsState>((set, get) => ({
@@ -19,6 +25,10 @@ export const usePostsStore = create<PostsState>((set, get) => ({
     title: "",
     content: "",
     loading: false,
+    isValid: {
+        title: true,
+        content: true,
+    },
 
     fetchPosts: async () => {
         set({ loading: true });
@@ -37,9 +47,36 @@ export const usePostsStore = create<PostsState>((set, get) => ({
 
     setContent: (content: string) => set({ content }),
 
+    validatePostFields: () => {
+        const { title, content } = get();
+        const { addError } = useErrorStore.getState();
+        const isValid = {
+            title: true,
+            content: true,
+        };
+
+        if (!title) {
+            addError("Title is required.");
+            isValid.title = false;
+        }
+
+        if (!content) {
+            addError("Content is required.");
+            isValid.content = false;
+        }
+
+        set({ isValid });
+
+        return isValid.title && isValid.content;
+    },
+
     addPost: async () => {
-        const { title, content, posts } = get();
+        const { title, content, posts, validatePostFields } = get();
         const { request } = useApiStore.getState();
+
+        if (!validatePostFields()) {
+            return;
+        }
 
         const newPost = {
             title,
@@ -57,6 +94,10 @@ export const usePostsStore = create<PostsState>((set, get) => ({
                 posts: [...posts, addedPost],
                 title: "",
                 content: "",
+                isValid: {
+                    title: true,
+                    content: true,
+                },
             });
         }
     },

@@ -11,6 +11,7 @@ const EventsPage = () => {
         title,
         probability,
         loading,
+        isValid,
         setTitle,
         setProbability,
         fetchEvents,
@@ -44,16 +45,19 @@ const EventsPage = () => {
             <div className="w-1/2 h-full">
                 <CustomForm
                     title={title}
+                    isTitleValid={isValid.title}
                     onTitleChange={(e) => setTitle(e.target.value)}
                     additionalFields={
                         <>
                             <label className="block text-white mb-2">Probability</label>
                             <input
                                 type="number"
-                                value={probability}
+                                value={probability ?? ""}
                                 onChange={(e) => setProbability(parseInt(e.target.value))}
-                                className="w-full p-2 border border-gray-300 rounded-md"
-                                placeholder="0"
+                                className={`w-full p-2 border border-gray-300 rounded-md ${
+                                    isValid.probability ? "border-gray-300" : "border-red-500 "
+                                }`}
+                                placeholder="0-100"
                             />
                         </>
                     }
