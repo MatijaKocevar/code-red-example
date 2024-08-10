@@ -16,7 +16,7 @@ const CustomForm: React.FC<CustomFormProps> = ({
     submitLabel,
 }) => {
     return (
-        <div className="w-1/2 h-full flex flex-col">
+        <div className="h-full flex flex-col">
             <div className="mb-4">
                 <label className="block text-white mb-2">Title</label>
                 <input

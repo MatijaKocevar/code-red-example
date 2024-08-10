@@ -18,7 +18,7 @@ const CustomList = <T extends { uuid: string }>({
     itemKey,
 }: CustomListProps<T>) => {
     return (
-        <div className="w-1/2 h-full overflow-y-auto">
+        <div className="h-full overflow-y-auto">
             {loading && <div className="m-4">Loading...</div>}
             {error && <div className="m-4 text-red-500">Error: {error}</div>}
 
