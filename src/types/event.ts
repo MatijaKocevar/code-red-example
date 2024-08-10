@@ -1,10 +1,8 @@
+import { User } from "./user";
+
 export interface Event {
     uuid: string;
-    user: {
-        uuid: string;
-        firstName: string;
-        lastName: string;
-    };
+    user: User;
     title: string;
     probability: number;
 }

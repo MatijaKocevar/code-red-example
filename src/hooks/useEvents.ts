@@ -36,13 +36,8 @@ export const useEvents = () => {
 
     const handleAddEvent = async () => {
         const newEvent = {
-            user: {
-                uuid: "user-uuid",
-                firstName: "First",
-                lastName: "Last",
-            },
-            title,
-            probability,
+            title: title,
+            probability: probability,
         };
 
         const response = await request<Event>("event", {
