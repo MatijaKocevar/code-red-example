@@ -4,20 +4,12 @@ import { Post } from "../types/post";
 import CustomList from "../components/custom-list/CustomList";
 import CustomForm from "../components/CustomForm";
 import CustomListItem from "../components/custom-list/CustomListItem";
+import { useApiStore } from "../stores/useApiStore";
 
 const PostsPage: React.FC = () => {
-    const {
-        posts,
-        title,
-        content,
-        loading,
-        error,
-        setTitle,
-        setContent,
-        fetchPosts,
-        addPost,
-        deletePost,
-    } = usePostsStore();
+    const { posts, title, content, setTitle, setContent, fetchPosts, addPost, deletePost } =
+        usePostsStore();
+    const { loading } = useApiStore();
 
     useEffect(() => {
         if (posts.length === 0) {
@@ -31,7 +23,6 @@ const PostsPage: React.FC = () => {
                 <CustomList<Post>
                     items={posts}
                     loading={loading}
-                    error={error}
                     onDelete={deletePost}
                     itemKey={(post) => post.uuid}
                     renderItem={(post) => (

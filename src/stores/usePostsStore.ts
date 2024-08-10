@@ -1,20 +1,17 @@
 import { create } from "zustand";
 import { Post } from "../types/post";
-
-const baseUrl = import.meta.env.VITE_API_URL;
-const tenantId = import.meta.env.VITE_CODE_RED_TENANT_ID;
+import { useApiStore } from "./useApiStore";
 
 interface PostsState {
     posts: Post[];
     title: string;
     content: string;
-    loading: boolean;
-    error: string | null;
     fetchPosts: () => Promise<void>;
     setTitle: (title: string) => void;
     setContent: (content: string) => void;
     addPost: () => Promise<void>;
     deletePost: (postId: string) => Promise<void>;
+    loading: boolean;
 }
 
 export const usePostsStore = create<PostsState>((set, get) => ({
@@ -22,24 +19,17 @@ export const usePostsStore = create<PostsState>((set, get) => ({
     title: "",
     content: "",
     loading: false,
-    error: null,
 
     fetchPosts: async () => {
-        set({ loading: true, error: null });
+        const { request, loading } = useApiStore.getState();
 
-        try {
-            const response = await fetch(`${baseUrl}${tenantId}/post`);
+        const data = await request<Post[]>("post");
 
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status} ${response.statusText}`);
-            }
-
-            const data: Post[] = await response.json();
-
-            set({ posts: data, loading: false });
-        } catch (error) {
-            set({ error: (error as Error).message, loading: false });
+        if (data) {
+            set({ posts: data });
         }
+
+        set({ loading });
     },
 
     setTitle: (title: string) => set({ title }),
@@ -48,50 +38,43 @@ export const usePostsStore = create<PostsState>((set, get) => ({
 
     addPost: async () => {
         const { title, content, posts } = get();
+        const { request, loading } = useApiStore.getState();
+
         const newPost = {
             title,
             content,
         };
 
-        set({ loading: true, error: null });
+        const addedPost = await request<Post>("post", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(newPost),
+        });
 
-        try {
-            const response = await fetch(`${baseUrl}${tenantId}/post`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(newPost),
+        if (addedPost) {
+            set({
+                posts: [...posts, addedPost],
+                title: "",
+                content: "",
             });
-
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status} ${response.statusText}`);
-            }
-
-            const addedPost: Post = await response.json();
-
-            set({ posts: [...posts, addedPost], title: "", content: "", loading: false });
-        } catch (error) {
-            set({ error: (error as Error).message, loading: false });
         }
+
+        set({ loading });
     },
 
     deletePost: async (postId: string) => {
-        set({ loading: true, error: null });
+        const { request, loading } = useApiStore.getState();
 
-        try {
-            const response = await fetch(`${baseUrl}${tenantId}/post/${postId}`, {
-                method: "DELETE",
-            });
+        const response = await request<void>(`post/${postId}`, {
+            method: "DELETE",
+        });
 
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status} ${response.statusText}`);
-            }
-
+        if (response !== undefined) {
             set((state) => ({
                 posts: state.posts.filter((post) => post.uuid !== postId),
-                loading: false,
             }));
-        } catch (error) {
-            set({ error: (error as Error).message, loading: false });
         }
+
+        set({ loading });
     },
 }));
