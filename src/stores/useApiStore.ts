@@ -1,23 +1,30 @@
 import { create } from "zustand";
+import { useErrorStore } from "../stores/useErrorStore";
 
 interface ApiState {
-    error: string | null;
     request: <T>(endpoint: string, options?: RequestInit) => Promise<T | undefined>;
     checkStatus: () => Promise<boolean>;
 }
 
-export const useApiStore = create<ApiState>((set) => {
+export const useApiStore = create<ApiState>(() => {
     const baseUrl = import.meta.env.VITE_API_URL;
     const tenantId = import.meta.env.VITE_CODE_RED_TENANT_ID;
+    const { addError } = useErrorStore.getState();
 
     const checkStatus = async (): Promise<boolean> => {
         try {
             const response = await fetch(`${baseUrl}/status`);
 
             if (!response.ok) {
-                const errorMessage = `Service status check failed: ${response.status} ${response.statusText}`;
+                const data = await response.json();
 
-                set({ error: errorMessage });
+                if (data) {
+                    addError(`Service status check failed`);
+
+                    return false;
+                }
+
+                addError(`Error: ${response.status} ${response.statusText}`);
 
                 return false;
             }
@@ -30,8 +37,7 @@ export const useApiStore = create<ApiState>((set) => {
                 err instanceof Error
                     ? err.message
                     : "An unknown error occurred during the status check.";
-
-            set({ error: errorMessage });
+            addError(errorMessage);
 
             return false;
         }
@@ -41,14 +47,19 @@ export const useApiStore = create<ApiState>((set) => {
         endpoint: string,
         options: RequestInit = {}
     ): Promise<T | undefined> => {
-        set({ error: null });
         try {
             const response = await fetch(`${baseUrl}/${tenantId}/${endpoint}`, options);
 
             if (!response.ok) {
-                const errorMessage = `Error: ${response.status} ${response.statusText}`;
+                const data = await response.json();
 
-                set({ error: errorMessage });
+                if (data) {
+                    addError(`${data.error}`);
+
+                    return undefined;
+                }
+
+                addError(`Error: ${response.status} ${response.statusText}`);
 
                 return undefined;
             }
@@ -58,15 +69,13 @@ export const useApiStore = create<ApiState>((set) => {
             return data;
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
-
-            set({ error: errorMessage });
+            addError(errorMessage);
 
             return undefined;
         }
     };
 
     return {
-        error: null,
         request,
         checkStatus,
     };

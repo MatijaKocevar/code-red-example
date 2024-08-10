@@ -1,6 +1,7 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import { useEffect, useRef, useState } from "react";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 const MainLayout = () => {
     const [navBarHeight, setNavBarHeight] = useState<number>(0);
@@ -26,6 +27,7 @@ const MainLayout = () => {
 
     return (
         <div className="h-full">
+            <ErrorDisplay />
             <div ref={navBarRef}>
                 <NavBar />
             </div>
