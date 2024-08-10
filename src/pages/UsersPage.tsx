@@ -1,8 +1,7 @@
 import React from "react";
-import UserDetails from "../components/users/UserDetails";
+import UserDetails from "../components/UserDetails";
 import { useUsers } from "../hooks/useUsers";
-import CustomList from "../components/CustomList";
-import UserItem from "../components/users/UserItem";
+import CustomList from "../components/custom-list/CustomList";
 import { User } from "../types/user";
 
 const UsersPage: React.FC = () => {
@@ -20,9 +19,16 @@ const UsersPage: React.FC = () => {
                     error={error}
                     itemKey={(user) => user.uuid}
                     renderItem={(user) => (
-                        <UserItem key={user.uuid} user={user} onClick={handleUserClick} />
+                        <>
+                            <div className="p-4 flex justify-center items-center bg-white rounded-md cursor-pointer text-center h-full">
+                                <div className="text-3xl font-medium text-gray-700">
+                                    {user.firstName} {user.lastName}
+                                </div>
+                            </div>
+                        </>
                     )}
                     showDeleteButton={false}
+                    onItemClick={(item) => handleUserClick(item)}
                 />
             </div>
             <div className="w-1/2 h-full">

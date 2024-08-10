@@ -1,8 +1,9 @@
 import React from "react";
 import { useEvents } from "../hooks/useEvents";
 import { Event } from "../types/event";
-import CustomList from "../components/CustomList";
+import CustomList from "../components/custom-list/CustomList";
 import CustomForm from "../components/CustomForm";
+import CustomListItem from "../components/custom-list/CustomListItem";
 
 const EventsPage: React.FC = () => {
     const {
@@ -27,13 +28,11 @@ const EventsPage: React.FC = () => {
                     onDelete={handleDelete}
                     itemKey={(event) => event.uuid}
                     renderItem={(event) => (
-                        <>
-                            <h3 className="text-lg font-bold text-gray-500">{event.title}</h3>
-                            <p className="text-gray-500">Probability: {event.probability}%</p>
-                            <p className="text-sm text-gray-500">
-                                By: {event.user.firstName} {event.user.lastName}
-                            </p>
-                        </>
+                        <CustomListItem
+                            title={event.title}
+                            content={`Probability: ${event.probability}%`}
+                            creatorName={`${event.user.firstName} ${event.user.lastName}`}
+                        />
                     )}
                 />
             </div>
@@ -42,16 +41,16 @@ const EventsPage: React.FC = () => {
                     title={title}
                     onTitleChange={(e) => setTitle(e.target.value)}
                     additionalFields={
-                        <div>
+                        <>
                             <label className="block text-white mb-2">Probability</label>
                             <input
                                 type="number"
                                 value={probability}
                                 onChange={(e) => setProbability(parseInt(e.target.value))}
                                 className="w-full p-2 border border-gray-300 rounded-md"
-                                placeholder="Probability (%)"
+                                placeholder="0"
                             />
-                        </div>
+                        </>
                     }
                     onSubmit={handleAddEvent}
                     submitLabel="Add Event"

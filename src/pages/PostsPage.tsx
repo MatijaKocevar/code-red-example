@@ -1,8 +1,9 @@
 import React from "react";
 import { usePosts } from "../hooks/usePosts";
 import { Post } from "../types/post";
-import CustomList from "../components/CustomList";
+import CustomList from "../components/custom-list/CustomList";
 import CustomForm from "../components/CustomForm";
+import CustomListItem from "../components/custom-list/CustomListItem";
 
 const PostsPage: React.FC = () => {
     const {
@@ -27,13 +28,11 @@ const PostsPage: React.FC = () => {
                     onDelete={handleDelete}
                     itemKey={(post) => post.uuid}
                     renderItem={(post) => (
-                        <>
-                            <h3 className="text-lg font-bold text-gray-500">{post.title}</h3>
-                            <p className="flex-grow text-gray-500">{post.content}</p>
-                            <p className="text-sm text-gray-500">
-                                By: {post.user.firstName} {post.user.lastName}
-                            </p>
-                        </>
+                        <CustomListItem
+                            title={post.title}
+                            content={post.content}
+                            creatorName={`${post.user.firstName} ${post.user.lastName}`}
+                        />
                     )}
                 />
             </div>
@@ -42,12 +41,15 @@ const PostsPage: React.FC = () => {
                     title={title}
                     onTitleChange={(e) => setTitle(e.target.value)}
                     additionalFields={
-                        <textarea
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                            className="w-full p-2 border border-gray-300 rounded-md flex-grow"
-                            placeholder="Content"
-                        />
+                        <>
+                            <label className="block text-white mb-2">Content</label>
+                            <textarea
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                className="w-full p-2 border border-gray-300 rounded-md flex-grow"
+                                placeholder="Content..."
+                            />
+                        </>
                     }
                     onSubmit={handleAddPost}
                     submitLabel="Add Post"

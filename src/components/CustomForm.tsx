@@ -22,6 +22,7 @@ const CustomForm: React.FC<CustomFormProps> = ({
                 <input
                     type="text"
                     value={title}
+                    placeholder="Title"
                     onChange={onTitleChange}
                     className="w-full p-2 border border-gray-300 rounded-md"
                 />
