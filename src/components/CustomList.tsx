@@ -5,8 +5,9 @@ interface CustomListProps<T> {
     loading: boolean;
     error: string | null;
     renderItem: (item: T) => React.ReactNode;
-    onDelete: (id: string) => void;
     itemKey: (item: T) => string;
+    showDeleteButton?: boolean;
+    onDelete?: (id: string) => void;
 }
 
 const CustomList = <T extends { uuid: string }>({
@@ -14,8 +15,9 @@ const CustomList = <T extends { uuid: string }>({
     loading,
     error,
     renderItem,
-    onDelete,
     itemKey,
+    showDeleteButton = true,
+    onDelete,
 }: CustomListProps<T>) => {
     return (
         <div className="h-full overflow-y-auto">
@@ -31,12 +33,14 @@ const CustomList = <T extends { uuid: string }>({
                         <div className="flex flex-col flex-grow justify-between h-full">
                             {renderItem(item)}
                         </div>
-                        <button
-                            onClick={() => onDelete(item.uuid)}
-                            className="bg-red-500 text-black p-2 rounded-md self-end"
-                        >
-                            Delete
-                        </button>
+                        {showDeleteButton && onDelete && (
+                            <button
+                                onClick={() => onDelete(item.uuid)}
+                                className="bg-red-500 text-black p-2 rounded-md self-end"
+                            >
+                                Delete
+                            </button>
+                        )}
                     </li>
                 ))}
             </ul>

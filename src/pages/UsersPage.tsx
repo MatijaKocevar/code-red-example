@@ -18,11 +18,11 @@ const UsersPage: React.FC = () => {
                     items={users}
                     loading={loading}
                     error={error}
-                    onDelete={() => {}}
                     itemKey={(user) => user.uuid}
                     renderItem={(user) => (
                         <UserItem key={user.uuid} user={user} onClick={handleUserClick} />
                     )}
+                    showDeleteButton={false}
                 />
             </div>
             <div className="w-1/2 h-full">
