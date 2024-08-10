@@ -11,14 +11,17 @@ interface EventsState {
     setProbability: (probability: number) => void;
     addEvent: () => Promise<void>;
     deleteEvent: (eventId: string) => Promise<void>;
+    loading: boolean;
 }
 
 export const useEventsStore = create<EventsState>((set, get) => ({
     events: [],
     title: "",
     probability: 0,
+    loading: false,
 
     fetchEvents: async () => {
+        set({ loading: true });
         const { request } = useApiStore.getState();
 
         const data = await request<Event[]>("event");
@@ -26,6 +29,7 @@ export const useEventsStore = create<EventsState>((set, get) => ({
         if (data) {
             set({ events: data });
         }
+        set({ loading: false });
     },
 
     setTitle: (title: string) => set({ title }),

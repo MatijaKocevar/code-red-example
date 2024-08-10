@@ -1,7 +1,6 @@
 import { create } from "zustand";
 
 interface ApiState {
-    loading: boolean;
     error: string | null;
     request: <T>(endpoint: string, options?: RequestInit) => Promise<T | undefined>;
     checkStatus: () => Promise<boolean>;
@@ -42,7 +41,7 @@ export const useApiStore = create<ApiState>((set) => {
         endpoint: string,
         options: RequestInit = {}
     ): Promise<T | undefined> => {
-        set({ loading: true, error: null });
+        set({ error: null });
         try {
             const response = await fetch(`${baseUrl}/${tenantId}/${endpoint}`, options);
 
@@ -50,27 +49,23 @@ export const useApiStore = create<ApiState>((set) => {
                 const errorMessage = `Error: ${response.status} ${response.statusText}`;
 
                 set({ error: errorMessage });
-                set({ loading: false });
 
                 return undefined;
             }
 
             const data: T = await response.json();
 
-            set({ loading: false });
-
             return data;
         } catch (err) {
             const errorMessage = err instanceof Error ? err.message : "An unknown error occurred";
 
-            set({ error: errorMessage, loading: false });
+            set({ error: errorMessage });
 
             return undefined;
         }
     };
 
     return {
-        loading: false,
         error: null,
         request,
         checkStatus,

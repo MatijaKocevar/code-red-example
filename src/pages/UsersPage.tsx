@@ -3,11 +3,9 @@ import UserDetails from "../components/UserDetails";
 import CustomList from "../components/custom-list/CustomList";
 import { useUsersStore } from "../stores/useUsersStore";
 import { User } from "../types/user";
-import { useApiStore } from "../stores/useApiStore";
 
 const UsersPage: React.FC = () => {
-    const { users, selectedUser, fetchUsers, selectUser } = useUsersStore();
-    const { loading } = useApiStore();
+    const { users, selectedUser, fetchUsers, selectUser, loading } = useUsersStore();
 
     useEffect(() => {
         if (users.length === 0) {

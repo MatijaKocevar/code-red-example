@@ -21,7 +21,8 @@ export const usePostsStore = create<PostsState>((set, get) => ({
     loading: false,
 
     fetchPosts: async () => {
-        const { request, loading } = useApiStore.getState();
+        set({ loading: true });
+        const { request } = useApiStore.getState();
 
         const data = await request<Post[]>("post");
 
@@ -29,7 +30,7 @@ export const usePostsStore = create<PostsState>((set, get) => ({
             set({ posts: data });
         }
 
-        set({ loading });
+        set({ loading: false });
     },
 
     setTitle: (title: string) => set({ title }),
@@ -38,7 +39,7 @@ export const usePostsStore = create<PostsState>((set, get) => ({
 
     addPost: async () => {
         const { title, content, posts } = get();
-        const { request, loading } = useApiStore.getState();
+        const { request } = useApiStore.getState();
 
         const newPost = {
             title,
@@ -58,12 +59,10 @@ export const usePostsStore = create<PostsState>((set, get) => ({
                 content: "",
             });
         }
-
-        set({ loading });
     },
 
     deletePost: async (postId: string) => {
-        const { request, loading } = useApiStore.getState();
+        const { request } = useApiStore.getState();
 
         const response = await request<void>(`post/${postId}`, {
             method: "DELETE",
@@ -74,7 +73,5 @@ export const usePostsStore = create<PostsState>((set, get) => ({
                 posts: state.posts.filter((post) => post.uuid !== postId),
             }));
         }
-
-        set({ loading });
     },
 }));

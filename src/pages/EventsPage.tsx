@@ -4,20 +4,19 @@ import { Event } from "../types/event";
 import CustomList from "../components/custom-list/CustomList";
 import CustomForm from "../components/CustomForm";
 import CustomListItem from "../components/custom-list/CustomListItem";
-import { useApiStore } from "../stores/useApiStore";
 
 const EventsPage: React.FC = () => {
     const {
         events,
         title,
         probability,
+        loading,
         setTitle,
         setProbability,
         fetchEvents,
         addEvent,
         deleteEvent,
     } = useEventsStore();
-    const { loading } = useApiStore();
 
     useEffect(() => {
         if (events.length === 0) {
