@@ -8,13 +8,13 @@ interface CustomFormProps {
     submitLabel: string;
 }
 
-const CustomForm: React.FC<CustomFormProps> = ({
+const CustomForm = ({
     title,
     onTitleChange,
     additionalFields,
     onSubmit,
     submitLabel,
-}) => {
+}: CustomFormProps) => {
     return (
         <div className="h-full flex flex-col">
             <div className="mb-4">

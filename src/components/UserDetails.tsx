@@ -1,11 +1,10 @@
-import React from "react";
-import { User } from "../../types/user";
+import { User } from "../types/user";
 
 interface UserDetailsProps {
     user: User | null;
 }
 
-const UserDetails: React.FC<UserDetailsProps> = ({ user }) => {
+const UserDetails = ({ user }: UserDetailsProps) => {
     if (!user) {
         return <div className="text-gray-500">Select a user to see the details</div>;
     }

@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useEventsStore } from "../stores/useEventsStore";
 import { Event } from "../types/event";
 import CustomList from "../components/custom-list/CustomList";
 import CustomForm from "../components/CustomForm";
 import CustomListItem from "../components/custom-list/CustomListItem";
 
-const EventsPage: React.FC = () => {
+const EventsPage = () => {
     const {
         events,
         title,

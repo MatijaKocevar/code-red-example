@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { usePostsStore } from "../stores/usePostsStore";
 import { Post } from "../types/post";
 import CustomList from "../components/custom-list/CustomList";
 import CustomForm from "../components/CustomForm";
 import CustomListItem from "../components/custom-list/CustomListItem";
 
-const PostsPage: React.FC = () => {
+const PostsPage = () => {
     const {
         posts,
         title,

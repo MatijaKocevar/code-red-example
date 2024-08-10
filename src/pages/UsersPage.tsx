@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import UserDetails from "../components/UserDetails";
 import CustomList from "../components/custom-list/CustomList";
 import { useUsersStore } from "../stores/useUsersStore";
 import { User } from "../types/user";
 
-const UsersPage: React.FC = () => {
+const UsersPage = () => {
     const { users, selectedUser, fetchUsers, selectUser, loading } = useUsersStore();
 
     useEffect(() => {
