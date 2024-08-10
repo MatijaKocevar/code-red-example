@@ -3,7 +3,6 @@ import React from "react";
 interface CustomListProps<T> {
     items: T[];
     loading: boolean;
-    error: string | null;
     renderItem: (item: T) => React.ReactNode;
     itemKey: (item: T) => string;
     showDeleteButton?: boolean;
@@ -14,18 +13,16 @@ interface CustomListProps<T> {
 const CustomList = <T extends { uuid: string }>({
     items,
     loading,
-    error,
     renderItem,
     itemKey,
     showDeleteButton = true,
     onDelete,
     onItemClick,
 }: CustomListProps<T>) => {
+    if (loading) return <div className="m-4">Loading...</div>;
+
     return (
         <div className="h-full overflow-y-auto">
-            {loading && <div className="m-4">Loading...</div>}
-            {error && <div className="m-4 text-red-500">Error: {error}</div>}
-
             <ul className="space-y-4">
                 {items.map((item) => (
                     <li
@@ -33,7 +30,7 @@ const CustomList = <T extends { uuid: string }>({
                         className="p-4 bg-white shadow-md rounded-md border border-gray-200 flex justify-between items-start h-40 cursor-pointer"
                         onClick={() => onItemClick?.(item)}
                     >
-                        <div className="flex flex-col flex-grow justify-between h-full">
+                        <div className="flex flex-col flex-grow justify-between h-full overflow-hidden">
                             {renderItem(item)}
                         </div>
                         {showDeleteButton && onDelete && (
