@@ -1,5 +1,5 @@
-import React from "react";
-import { usePosts } from "../hooks/usePosts";
+import React, { useEffect } from "react";
+import { usePostsStore } from "../stores/usePostsStore";
 import { Post } from "../types/post";
 import CustomList from "../components/custom-list/CustomList";
 import CustomForm from "../components/CustomForm";
@@ -14,9 +14,16 @@ const PostsPage: React.FC = () => {
         error,
         setTitle,
         setContent,
-        handleDelete,
-        handleAddPost,
-    } = usePosts();
+        fetchPosts,
+        addPost,
+        deletePost,
+    } = usePostsStore();
+
+    useEffect(() => {
+        if (posts.length === 0) {
+            fetchPosts();
+        }
+    }, [fetchPosts, posts.length]);
 
     return (
         <div className="flex gap-4 h-full p-8">
@@ -25,7 +32,7 @@ const PostsPage: React.FC = () => {
                     items={posts}
                     loading={loading}
                     error={error}
-                    onDelete={handleDelete}
+                    onDelete={deletePost}
                     itemKey={(post) => post.uuid}
                     renderItem={(post) => (
                         <CustomListItem
@@ -51,7 +58,7 @@ const PostsPage: React.FC = () => {
                             />
                         </>
                     }
-                    onSubmit={handleAddPost}
+                    onSubmit={addPost}
                     submitLabel="Add Post"
                 />
             </div>
