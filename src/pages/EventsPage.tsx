@@ -1,5 +1,5 @@
-import React from "react";
-import { useEvents } from "../hooks/useEvents";
+import React, { useEffect } from "react";
+import { useEventsStore } from "../stores/useEventsStore";
 import { Event } from "../types/event";
 import CustomList from "../components/custom-list/CustomList";
 import CustomForm from "../components/CustomForm";
@@ -14,9 +14,16 @@ const EventsPage: React.FC = () => {
         error,
         setTitle,
         setProbability,
-        handleDelete,
-        handleAddEvent,
-    } = useEvents();
+        fetchEvents,
+        addEvent,
+        deleteEvent,
+    } = useEventsStore();
+
+    useEffect(() => {
+        if (events.length === 0) {
+            fetchEvents();
+        }
+    }, [fetchEvents, events.length]);
 
     return (
         <div className="flex gap-4 h-full p-8">
@@ -25,7 +32,7 @@ const EventsPage: React.FC = () => {
                     items={events}
                     loading={loading}
                     error={error}
-                    onDelete={handleDelete}
+                    onDelete={deleteEvent}
                     itemKey={(event) => event.uuid}
                     renderItem={(event) => (
                         <CustomListItem
@@ -52,7 +59,7 @@ const EventsPage: React.FC = () => {
                             />
                         </>
                     }
-                    onSubmit={handleAddEvent}
+                    onSubmit={addEvent}
                     submitLabel="Add Event"
                 />
             </div>
