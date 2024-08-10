@@ -27,7 +27,7 @@ export const usePosts = () => {
             method: "DELETE",
         });
 
-        if (response !== undefined) {
+        if (response) {
             setPosts((prevPosts) => prevPosts.filter((post) => post.uuid !== postId));
         } else {
             console.error("Failed to delete post");
@@ -36,11 +36,6 @@ export const usePosts = () => {
 
     const handleAddPost = async () => {
         const newPost = {
-            user: {
-                uuid: "user-uuid",
-                firstName: "First",
-                lastName: "Last",
-            },
             title,
             content,
         };

@@ -27,7 +27,7 @@ export const useEvents = () => {
             method: "DELETE",
         });
 
-        if (response !== undefined) {
+        if (response) {
             setEvents((prevEvents) => prevEvents.filter((event) => event.uuid !== eventId));
         } else {
             console.error("Failed to delete event");
