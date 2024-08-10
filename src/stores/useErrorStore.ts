@@ -16,7 +16,7 @@ export const useErrorStore = create<ErrorState>((set) => ({
     errors: [],
 
     addError: (message: string) => {
-        const id = Date.now().toString();
+        const id = Math.random().toString(36);
         set((state) => ({
             errors: [...state.errors, { id, message }],
         }));
