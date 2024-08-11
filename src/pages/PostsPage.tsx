@@ -57,7 +57,11 @@ const PostsPage = () => {
                                     isValid.content ? "border-gray-300" : "border-red-500 "
                                 }`}
                                 placeholder="Content..."
+                                maxLength={200}
                             />
+                            <div className="text-right text-sm text-gray-400 mt-1">
+                                {content.length} / 200 characters
+                            </div>
                         </>
                     }
                     onSubmit={addPost}

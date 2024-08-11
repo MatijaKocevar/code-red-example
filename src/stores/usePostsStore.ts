@@ -63,6 +63,9 @@ export const usePostsStore = create<PostsState>((set, get) => ({
         if (!content) {
             addError("Content is required.");
             isValid.content = false;
+        } else if (content.length > 200) {
+            addError("Content must not exceed 200 characters.");
+            isValid.content = false;
         }
 
         set({ isValid });
