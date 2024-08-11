@@ -12,7 +12,10 @@ const ErrorDisplay = () => {
                     onClick={() => removeError(error.id)}
                 >
                     <div className="flex justify-between items-center">
-                        <span className="whitespace-nowrap overflow-hidden text-ellipsis">
+                        <span
+                            title={error.message}
+                            className="whitespace-nowrap overflow-hidden text-ellipsis"
+                        >
                             {error.message}
                         </span>
                         <button
