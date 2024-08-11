@@ -25,16 +25,16 @@ To start the application in development mode:
 npm run dev
 ```
 
-To build the application for production:
+To build the application and push to gh-pages:
 
 ```bash
 npm run deploy
 ```
 
-To run the production build locally:
+To build the production build locally:
 
 ```bash
-npm run preview
+npm run build
 ```
 
 ## State Management
